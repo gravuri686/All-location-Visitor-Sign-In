@@ -3,36 +3,73 @@
 <head>
     <title>Intertek Visitor Sign-In</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
-            background-color: #FFD100; /* Intertek yellow */
+            background-color: #FFD100;
             background-image: url("intertek-logo.png");
             background-repeat: no-repeat;
             background-position: center;
             background-size: 350px;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            text-align: center;
         }
 
         form {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
-            width: 350px;
-            border-radius: 10px;
+            width: 95%;
+            max-width: 420px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"] {
+            width: 100%;
+            padding: 14px;
+            font-size: 20px;
+            border-radius: 6px;
+            border: 1px solid #555;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+
     <h2>Visitor Sign-In Form</h2>
 
-<form action="https://defaultcec3b02aea8c40eda66fa89023ac32.86.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/ddd2fcf8aa934b9c91ff0ccacc5d7c3d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gKTxn2yxRDMjP64E_HquBCOLrCLM2u-0RtAW1pX6KjY" method="POST">
+    <form onsubmit="submitForm(event)">
 
         <label>First Name:</label><br>
-        <input type="text" name="First Name" required><br><br>
+        <input type="text" name="FirstName" required><br><br>
 
         <label>Last Name:</label><br>
-        <input type="text" name="Last Name" required><br><br>
-         
-        <label>Today's Date:</label><br>
-        <input type="date" name="Todays Date" required><br><br>
+        <input type="text" name="LastName" required><br><br>
+
+        <label>Enter the date of visit to Intertek Lab:</label><br>
+        <input type="date" name="Date" required><br><br>
 
         <label>Phone Number:</label><br>
         <input type="text" name="Phone" required><br><br>
@@ -43,15 +80,55 @@
         <label>Email Address:</label><br>
         <input type="email" name="Email" required><br><br>
 
-        <label>Intertek Contact Name:</label><br>
-        <input type="text" name="Intertek Contact" required><br><br>
+        <label>Name of the Intertek contact or testing department:</label><br>
+        <input type="text" name="IntertekContact" required><br><br>
 
-        <label>Have you watched the safety video earlier?</label><br>
-        <input type="radio" name="Watched Safety Video Earlier" value="Yes" required> Yes<br>
-        <input type="radio" name="Watched Safety Video Earlier" value="No" required> No<br><br>
+        <label>Enter Intertek Location you are visiting:</label><br>
+        <input type="text" name="IntertekLocation" required><br><br>
+
+        <label>Have you watched the safety video previously?</label><br>
+        <input type="radio" name="WatchedVideo" value="Yes" required> Yes<br>
+        <input type="radio" name="WatchedVideo" value="No" required> No<br><br>
 
         <button type="submit">Submit</button>
 
     </form>
+
+<script>
+function submitForm(event) {
+    event.preventDefault();
+
+    const data = {
+        FirstName: document.querySelector("[name='FirstName']").value,
+        LastName: document.querySelector("[name='LastName']").value,
+        Date: document.querySelector("[name='Date']").value,
+        Phone: document.querySelector("[name='Phone']").value,
+        Company: document.querySelector("[name='Company']").value,
+        Email: document.querySelector("[name='Email']").value,
+        IntertekContact: document.querySelector("[name='IntertekContact']").value,
+        IntertekLocation: document.querySelector("[name='IntertekLocation']").value,
+        WatchedVideo: document.querySelector("[name='WatchedVideo']:checked").value
+    };
+
+    fetch("YOUR_API_URL_HERE", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        document.body.innerHTML = `
+            <div style="text-align:center; margin-top:120px; font-family:Arial;">
+                <h1>Thank you for signing in with Intertek.</h1>
+                <h2>Safety First.</h2>
+                <p style="font-size:20px; margin-top:10px;">Have a great day.</p>
+            </div>
+        `;
+        document.body.style.background = "#FFD100";
+    })
+    .catch(() => alert("Error submitting form"));
+}
+</script>
+
 </body>
 </html>
+
