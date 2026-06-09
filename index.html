@@ -112,7 +112,7 @@ function submitForm(event) {
         WatchedVideo: document.querySelector("[name='WatchedVideo']:checked").value
     };
 
-    fetch("YOUR_API_URL_HERE", {
+    fetch("https://defaultcec3b02aea8c40eda66fa89023ac32.86.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/106d0dd74cd54004985784323c1ffcbf/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6irieBnuwdLu5CJpomxRbzOdnSgOBglmBn5oDYt2ZM", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
